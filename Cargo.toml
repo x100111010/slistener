@@ -1,0 +1,25 @@
+[package]
+name = "slistener"
+version = "0.3.14"
+rust-version = "1.83.0"
+edition = "2021"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+lto = "thin"
+strip = true
+overflow-checks = true
+panic = "abort"
+
+[dependencies]
+spectre-wrpc-client = { git = "https://github.com/spectre-project/rusty-spectre.git", branch = "main" }
+spectre-rpc-core = { git = "https://github.com/spectre-project/rusty-spectre.git", branch = "main" }
+clap = { version = "4.5.31", features = ["derive"] }
+tokio = { version = "1.43.0", features = ["rt-multi-thread"] }
+futures-util = "0.3.31"
+workflow-core = { version = "0.18.0" }
+futures = "0.3.31"
+signal-hook = "0.3"
+ctrlc = "3.2"
