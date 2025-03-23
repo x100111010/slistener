@@ -150,7 +150,13 @@ impl Listener {
             ChannelType::Persistent,
         ));
         *self.inner.listener_id.lock().unwrap() = Some(listener_id);
+
         self.client().rpc_api().start_notify(listener_id, Scope::VirtualDaaScoreChanged(VirtualDaaScoreChangedScope {})).await?;
+
+        self.client().rpc_api().start_notify(listener_id, Scope::SinkBlueScoreChanged(SinkBlueScoreChangedScope {})).await?;
+
+        self.client().rpc_api().start_notify(listener_id, Scope::BlockAdded(BlockAddedScope {})).await?;
+
         Ok(())
     }
 
