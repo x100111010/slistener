@@ -1,5 +1,4 @@
 use clap::Parser;
-use ctrlc;
 use futures::{select_biased, FutureExt};
 use spectre_rpc_core::{api::rpc::RpcApi, Notification};
 use spectre_wrpc_client::prelude::*;
