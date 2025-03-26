@@ -150,11 +150,13 @@ impl Listener {
         ));
         *self.inner.listener_id.lock().unwrap() = Some(listener_id);
 
-        self.client().rpc_api().start_notify(listener_id, Scope::VirtualDaaScoreChanged(VirtualDaaScoreChangedScope {})).await?;
+        // self.client().rpc_api().start_notify(listener_id, Scope::VirtualDaaScoreChanged(VirtualDaaScoreChangedScope {})).await?;
 
-        self.client().rpc_api().start_notify(listener_id, Scope::SinkBlueScoreChanged(SinkBlueScoreChangedScope {})).await?;
+        self.client().rpc_api().start_notify(listener_id, Scope::MempoolSizeChanged(MempoolSizeChangedScope {})).await?;
 
-        self.client().rpc_api().start_notify(listener_id, Scope::BlockAdded(BlockAddedScope {})).await?;
+        // self.client().rpc_api().start_notify(listener_id, Scope::BlockAdded(BlockAddedScope {})).await?;
+
+        // self.client().rpc_api().start_notify(listener_id, Scope::UtxosChanged(UtxosChangedScope { addresses: vec![] })).await?;
 
         Ok(())
     }
@@ -191,12 +193,13 @@ impl Listener {
         let server_info = self.client().get_server_info().await?;
         if self.inner.verbose {
             let status = if server_info.is_synced { "synced" } else { "not-synced" };
-            println!(
-                "Server info: spectre/{}/{}/{}/{}",
-                server_info.server_version, server_info.network_id, server_info.virtual_daa_score, status
-            );
+            println!("Node version: {}", server_info.server_version);
+            println!("Network: {}", server_info.network_id);
+            println!("Virtual DAA Score: {}", server_info.virtual_daa_score);
+            println!("Node is indexing UTXOs: {}", server_info.has_utxo_index);
+            println!("Node is synced: {}", status);
         } else {
-            println!("Server info: {server_info:?}");
+            println!("Server info: {:?}", server_info);
         }
 
         // now that we have successfully connected we
